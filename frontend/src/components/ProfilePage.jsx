@@ -105,7 +105,7 @@ export function ProfilePage() {
               <ShieldCheck size={14} /> Admin console
             </a>
           )}
-          <button type="button" onClick={() => signOutOfficer().then(() => (window.location.href = "/login"))} className="admin-reject flex w-full items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-bold">
+          <button type="button" onClick={() => signOutOfficer().then(() => (window.location.href = "/"))} className="admin-reject flex w-full items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-bold">
             <LogOut size={14} /> Sign out
           </button>
         </div>

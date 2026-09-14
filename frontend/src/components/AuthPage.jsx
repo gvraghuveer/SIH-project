@@ -100,7 +100,13 @@ export function AuthPage({ initialMode = "login" }) {
                   <span>Officer full name</span>
                   <div className="auth-input">
                     <User size={14} />
-                    <input required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="Inspector A. Sharma" />
+                    <input 
+                      required 
+                      value={fullName} 
+                      onChange={(e) => setFullName(e.target.value)} 
+                      placeholder="Inspector A. Sharma" 
+                      style={{ border: "none", outline: "none", background: "transparent", padding: 0, margin: 0, boxShadow: "none" }}
+                    />
                   </div>
                 </label>
                 <div className="auth-row">
@@ -108,14 +114,24 @@ export function AuthPage({ initialMode = "login" }) {
                     <span>Badge / service ID</span>
                     <div className="auth-input">
                       <BadgeCheck size={14} />
-                      <input required value={badgeId} onChange={(e) => setBadgeId(e.target.value)} placeholder="I4C-IND-88219" />
+                      <input 
+                        required 
+                        value={badgeId} 
+                        onChange={(e) => setBadgeId(e.target.value)} 
+                        placeholder="I4C-IND-88219" 
+                        style={{ border: "none", outline: "none", background: "transparent", padding: 0, margin: 0, boxShadow: "none" }}
+                      />
                     </div>
                   </label>
                   <label className="auth-field">
                     <span>Station / unit</span>
                     <div className="auth-input">
                       <Building size={14} />
-                      <select value={stationCode} onChange={(e) => setStationCode(e.target.value)}>
+                      <select 
+                        value={stationCode} 
+                        onChange={(e) => setStationCode(e.target.value)}
+                        style={{ border: "none", outline: "none", background: "transparent", padding: 0, margin: 0, boxShadow: "none" }}
+                      >
                         {STATIONS.map((s) => <option key={s} value={s}>{s}</option>)}
                       </select>
                     </div>
@@ -128,7 +144,14 @@ export function AuthPage({ initialMode = "login" }) {
               <span>Email address</span>
               <div className="auth-input">
                 <User size={14} />
-                <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+                <input 
+                  required 
+                  type="email" 
+                  value={email} 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  placeholder="you@example.com" 
+                  style={{ border: "none", outline: "none", background: "transparent", padding: 0, margin: 0, boxShadow: "none" }}
+                />
               </div>
             </label>
 
@@ -143,6 +166,7 @@ export function AuthPage({ initialMode = "login" }) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 6 characters"
+                  style={{ border: "none", outline: "none", background: "transparent", padding: 0, margin: 0, boxShadow: "none" }}
                 />
                 <button type="button" className="auth-eye" onClick={() => setShowPassword(!showPassword)} aria-label="Toggle password">
                   {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
@@ -168,7 +192,7 @@ export function AuthPage({ initialMode = "login" }) {
             </button>
           </form>
 
-          {!isSignup && seeded && (
+          {!isSignup && (
             <div className="auth-demo">
               <span className="auth-demo__head">Demo accounts — click to fill</span>
               {DEMO_CREDENTIALS.map((c) => (

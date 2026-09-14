@@ -195,6 +195,15 @@ export async function signOutOfficer() {
   }
 }
 
+export function getSession() {
+  const user = read(SESSION_KEY, null);
+  if (!user) return null;
+  return {
+    user,
+    token: user.token || "demo_jwt_officer_token_setu"
+  };
+}
+
 export async function getSessionUser() {
   if (await live()) {
     const { data } = await supabase.auth.getUser();

@@ -8,6 +8,7 @@ import {
 import { CommandPaletteModal } from "./CommandPaletteModal.jsx";
 import ChakravyuhLogo from "./ChakravyuhLogo.jsx";
 import { useTheme } from "../lib/ThemeContext.jsx";
+import { getSessionUser, signOutOfficer } from "../lib/auth.js";
 
 const workspaceLinks = [
   { id: "workspace", label: "Live Attribution", icon: Activity },
@@ -38,9 +39,26 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
 
   const notifRef = useRef(null);
   const settingsRef = useRef(null);
+
+  // Sync active officer profile
+  useEffect(() => {
+    let alive = true;
+    getSessionUser().then((u) => {
+      if (alive) setCurrentUser(u);
+    });
+    return () => { alive = false; };
+  }, [activeRoute]);
+
+  const handleSignOut = async () => {
+    setSettingsOpen(false);
+    await signOutOfficer();
+    setCurrentUser(null);
+    window.location.href = "/";
+  };
 
   // Global ⌘K / Ctrl+K listener
   useEffect(() => {
@@ -65,8 +83,7 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
     return () => clearInterval(interval);
   }, []);
 
-  // Popover dismissal: pointer outside, focus moving away, or Escape. Focus
-  // matters as much as the click — tabbing out of a popover should close it.
+  // Popover dismissal
   useEffect(() => {
     const away = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
@@ -93,6 +110,12 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
     };
   }, []);
 
+  const officerInitials = currentUser?.full_name 
+    ? currentUser.full_name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase()
+    : "IO";
+  const officerName = currentUser?.full_name || "Investigating Officer";
+  const officerStation = currentUser?.station_code || "Cyber Crime Unit";
+
   // Render High-End Settings & Appearance Dropdown
   const renderSettingsDropdown = () => (
     <motion.div
@@ -108,16 +131,18 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
       <div className="p-4 border-b border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02]">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#E5B83B]/30 to-emerald-900 border border-[#E5B83B]/50 text-[#FFE28A] font-extrabold text-sm shadow-md">
-            AS
+            {officerInitials}
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <strong className="block text-xs font-bold text-slate-900 dark:text-white truncate">Inspector A. Sharma</strong>
+              <strong className="block text-xs font-bold text-slate-900 dark:text-white truncate">
+                {officerName}
+              </strong>
               <span className="shrink-0 rounded bg-emerald-500/15 border border-emerald-500/30 px-1.5 py-0.2 text-[8px] font-bold text-emerald-700 dark:text-emerald-300">
-                VERIFIED
+                {currentUser?.role?.toUpperCase() || "ACTIVE"}
               </span>
             </div>
-            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">Cyber Crime PS · I4C Operations</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 truncate">{officerStation}</p>
           </div>
         </div>
 
@@ -131,14 +156,16 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
               <User size={12} className="text-[#E5B83B]" />
               <span>Officer Profile</span>
             </button>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 py-1.5 px-2 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:border-[#E5B83B]/60 hover:text-[#B45309] dark:hover:text-[#FFE28A] transition cursor-pointer"
-              onClick={() => { setSettingsOpen(false); onNavigate("profile"); }}
-            >
-              <ShieldCheck size={12} className="text-emerald-500" />
-              <span>Profile</span>
-            </button>
+            {currentUser?.role === "admin" && (
+              <button
+                type="button"
+                className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 py-1.5 px-2 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:border-[#E5B83B]/60 hover:text-[#B45309] dark:hover:text-[#FFE28A] transition cursor-pointer"
+                onClick={() => { setSettingsOpen(false); onNavigate("admin"); }}
+              >
+                <ShieldCheck size={12} className="text-emerald-500" />
+                <span>Admin Console</span>
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -192,10 +219,10 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
         <button
           type="button"
           className="w-full flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition cursor-pointer"
-          onClick={() => { setSettingsOpen(false); onNavigate(isLanding ? "login" : "landing"); }}
+          onClick={handleSignOut}
         >
           <LogOut size={13} />
-          <span>{isLanding ? "Access Officer Login" : "Lock Session / Sign Out"}</span>
+          <span>{currentUser ? "Lock Session / Sign Out" : "Access Officer Login"}</span>
         </button>
       </div>
     </motion.div>

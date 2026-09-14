@@ -13,6 +13,10 @@ dist
 coverage
 *.local
 
+README.md
+
+__pycache__
+
 # Environment files
 .env
 .env.*
