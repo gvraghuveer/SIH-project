@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BadgeCheck, Building2, Check, Fingerprint, LogOut, Mail, Moon, Pencil, ShieldCheck, Sun, Sparkles } from "lucide-react";
 import { getMyProfile, signOutOfficer, updateMyProfile } from "../lib/auth.js";
-import { useTheme } from "../lib/ThemeContext.jsx";
 
 const CLEARANCES = [
   "Tier 1 - Unit Attribution",
@@ -33,7 +32,6 @@ function Field({ icon: Icon, label, value, onChange, editing, mono, options }) {
 }
 
 export function ProfilePage() {
-  const { glassMode, toggleGlassMode } = useTheme();
   const [profile, setProfile] = useState(null);
   const [draft, setDraft] = useState({});
   const [editing, setEditing] = useState(false);
@@ -96,10 +94,6 @@ export function ProfilePage() {
         </div>
 
         <div className="mt-6 space-y-2 text-left">
-          <button type="button" onClick={toggleGlassMode} className="admin-row flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-bold">
-            <span className="flex items-center gap-2"><Sparkles size={14} className="admin-accent" /> Glass surfaces</span>
-            <span className="admin-muted">{glassMode ? "On" : "Off"}</span>
-          </button>
           {profile.role === "admin" && (
             <a href="/admin" className="admin-btn flex w-full items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-bold">
               <ShieldCheck size={14} /> Admin console

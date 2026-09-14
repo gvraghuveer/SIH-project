@@ -2,15 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { 
   Activity, ArrowLeft, ArrowRight, Bell, BookOpen, ChevronDown, Clock3, Command, 
-  ExternalLink, FileText, Layers, LogOut, Menu, Moon, Palette, Search, Settings, 
+  ExternalLink, FileText, Home, LogOut, Menu, Moon, Palette, Search, Settings, 
   Shield, ShieldCheck, Sparkles, Sun, User, Wifi, X, Zap 
 } from "lucide-react";
 import { CommandPaletteModal } from "./CommandPaletteModal.jsx";
 import ChakravyuhLogo from "./ChakravyuhLogo.jsx";
-import { useTheme } from "../lib/ThemeContext.jsx";
 import { getSessionUser, signOutOfficer } from "../lib/auth.js";
 
 const workspaceLinks = [
+  { id: "landing", label: "Home", icon: Home },
   { id: "workspace", label: "Live Attribution", icon: Activity },
   { id: "watchlist", label: "Watchlist", icon: Shield },
   { id: "dossier", label: "Legal Dossier", icon: FileText },
@@ -18,6 +18,7 @@ const workspaceLinks = [
 ];
 
 const landingNavLinks = [
+  { id: "hero", label: "Home", icon: Home },
   { id: "evidence", label: "Active Stream", icon: Zap },
   { id: "how-it-works", label: "How It Works", icon: Sparkles },
 ];
@@ -29,7 +30,6 @@ const notifications = [
 ];
 
 export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" }) {
-  const { glassMode, toggleGlassMode } = useTheme();
   const isLanding = variant === "landing";
   const isAuth = variant === "auth";
   const navLinks = isLanding ? landingNavLinks : (isAuth ? [] : workspaceLinks);
@@ -116,7 +116,7 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
   const officerName = currentUser?.full_name || "Investigating Officer";
   const officerStation = currentUser?.station_code || "Cyber Crime Unit";
 
-  // Render High-End Settings & Appearance Dropdown
+  // Render High-End Settings & Profile Dropdown
   const renderSettingsDropdown = () => (
     <motion.div
       initial={{ opacity: 0, y: -10, scale: 0.96 }}
@@ -146,71 +146,34 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
           </div>
         </div>
 
-        {!isLanding && !isAuth && (
-          <div className="mt-3 grid grid-cols-2 gap-2">
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 py-1.5 px-2 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:border-[#E5B83B]/60 hover:text-[#B45309] dark:hover:text-[#FFE28A] transition cursor-pointer"
+            onClick={() => { setSettingsOpen(false); onNavigate("profile"); }}
+          >
+            <User size={12} className="text-[#E5B83B]" />
+            <span>Officer Profile</span>
+          </button>
+          {currentUser?.role === "admin" ? (
             <button
               type="button"
               className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 py-1.5 px-2 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:border-[#E5B83B]/60 hover:text-[#B45309] dark:hover:text-[#FFE28A] transition cursor-pointer"
-              onClick={() => { setSettingsOpen(false); onNavigate("profile"); }}
+              onClick={() => { setSettingsOpen(false); onNavigate("admin"); }}
             >
-              <User size={12} className="text-[#E5B83B]" />
-              <span>Officer Profile</span>
+              <ShieldCheck size={12} className="text-emerald-500" />
+              <span>Admin Console</span>
             </button>
-            {currentUser?.role === "admin" && (
-              <button
-                type="button"
-                className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 py-1.5 px-2 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:border-[#E5B83B]/60 hover:text-[#B45309] dark:hover:text-[#FFE28A] transition cursor-pointer"
-                onClick={() => { setSettingsOpen(false); onNavigate("admin"); }}
-              >
-                <ShieldCheck size={12} className="text-emerald-500" />
-                <span>Admin Console</span>
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Settings Controls Section */}
-      <div className="p-3.5 space-y-3">
-        {/* Theme Mode Switcher */}
-        {/* Glassmorphism FX Switcher */}
-        <div className="flex items-center justify-between rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02] p-2.5">
-          <div className="flex items-center gap-2.5">
-            <div className={`flex h-8 w-8 items-center justify-center rounded-lg border transition ${
-              glassMode 
-                ? "bg-[#E5B83B]/15 border-[#E5B83B]/50 text-[#B45309] dark:text-[#FFE28A] shadow-[0_0_12px_rgba(229,184,59,0.3)]" 
-                : "bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-400"
-            }`}>
-              <Layers size={15} />
-            </div>
-            <div>
-              <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                <span>Glassmorphism UI</span>
-                {glassMode && (
-                  <span className="rounded-full bg-emerald-500/20 px-1.5 py-0.2 text-[8px] font-bold text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
-                    ACTIVE
-                  </span>
-                )}
-              </div>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400">Frosted translucency &amp; blur</p>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={toggleGlassMode}
-            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-              glassMode ? "bg-[#006039] border-[#E5B83B]/60 shadow-[0_0_12px_rgba(16,185,129,0.4)]" : "bg-slate-300 dark:bg-slate-700"
-            }`}
-            role="switch"
-            aria-checked={glassMode}
-          >
-            <span
-              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                glassMode ? "translate-x-5 bg-[#FFE28A]" : "translate-x-0"
-              }`}
-            />
-          </button>
+          ) : (
+            <button
+              type="button"
+              className="flex items-center justify-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 bg-white/60 dark:bg-white/5 py-1.5 px-2 text-[11px] font-bold text-slate-800 dark:text-slate-200 hover:border-[#E5B83B]/60 hover:text-[#B45309] dark:hover:text-[#FFE28A] transition cursor-pointer"
+              onClick={() => { setSettingsOpen(false); onNavigate("dossier"); }}
+            >
+              <FileText size={12} className="text-[#E5B83B]" />
+              <span>Dossiers</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -267,7 +230,9 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
             <LayoutGroup id="cv-dock-nav">
               <nav className="cv-dock-pill relative" aria-label="Primary navigation">
                 {navLinks.map(({ id, label, icon: Icon }) => {
-                  const isActive = activeRoute === id;
+                  const isHomeLink = (id === "hero" || id === "landing" || id === "home");
+                  const isHomeActive = (activeRoute === "hero" || activeRoute === "landing" || activeRoute === "home");
+                  const isActive = activeRoute === id || (isHomeLink && isHomeActive);
                   return (
                     <motion.button
                       type="button"
@@ -501,21 +466,26 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
             exit={{ opacity: 0, y: -15 }}
             className="cv-mobile-dropdown lg:hidden"
           >
-            {navLinks.map(({ id, label, icon: Icon }) => (
-              <button
-                type="button"
-                key={id}
-                className={`flex items-center gap-3 w-full p-3 rounded-xl text-xs font-semibold transition ${
-                  activeRoute === id 
-                    ? "bg-slate-900 text-white dark:bg-[rgba(216,184,77,0.15)] dark:text-[#d8b84d] dark:border dark:border-[rgba(216,184,77,0.3)]" 
-                    : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
-                }`}
-                onClick={() => { onNavigate(id); setMobileOpen(false); }}
-              >
-                <Icon size={16} />
-                <span>{label}</span>
-              </button>
-            ))}
+            {navLinks.map(({ id, label, icon: Icon }) => {
+              const isHomeLink = (id === "hero" || id === "landing" || id === "home");
+              const isHomeActive = (activeRoute === "hero" || activeRoute === "landing" || activeRoute === "home");
+              const isActive = activeRoute === id || (isHomeLink && isHomeActive);
+              return (
+                <button
+                  type="button"
+                  key={id}
+                  className={`flex items-center gap-3 w-full p-3 rounded-xl text-xs font-semibold transition ${
+                    isActive 
+                      ? "bg-gradient-to-r from-[#006039] to-[#059669] text-white border border-[#E5B83B]/60 shadow-[0_0_15px_rgba(16,185,129,0.35)]" 
+                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5"
+                  }`}
+                  onClick={() => { onNavigate(id); setMobileOpen(false); }}
+                >
+                  <Icon size={16} />
+                  <span>{label}</span>
+                </button>
+              );
+            })}
             <div className="border-t border-slate-200 dark:border-white/10 pt-2 mt-2 space-y-1">
               {!isLanding && !isAuth && (
                 <>

@@ -260,7 +260,7 @@ export function LandingPage() {
   // middle of the viewport is the one to highlight.
   useEffect(() => {
     const bands = [
-      ["hero", "landing"],
+      ["hero", "hero"],
       ["evidence", "evidence"],
       ["how-it-works", "how-it-works"],
     ];
@@ -268,7 +268,7 @@ export function LandingPage() {
     const measure = () => {
       frame = 0;
       const mid = window.innerHeight / 2;
-      let current = "landing";
+      let current = "hero";
       for (const [id, route] of bands) {
         const el = document.getElementById(id);
         if (!el) continue;

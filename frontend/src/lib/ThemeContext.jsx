@@ -5,17 +5,15 @@ const ThemeContext = createContext({
   theme: "dark",
   toggleTheme: () => {},
   setTheme: () => {},
-  glassMode: true,
+  glassMode: false,
   toggleGlassMode: () => {},
   setGlassMode: () => {},
 });
 
 export function ThemeProvider({ children }) {
-  // The product is dark-only. Light mode was removed rather than patched:
-  // hundreds of high-specificity overrides made it unreliable, and the
-  // forensic surfaces were designed against the dark palette.
+  // The product is dark-only. Solid high-contrast UI.
   const [glassMode, setGlassMode] = useState(() => {
-    return readPref("chakravyuh_glass_mode") !== "false";
+    return readPref("chakravyuh_glass_mode") === "true";
   });
 
   useEffect(() => {
