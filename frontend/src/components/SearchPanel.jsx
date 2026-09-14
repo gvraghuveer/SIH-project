@@ -157,12 +157,12 @@ export default function SearchPanel({ onTrace, loading }) {
       {/* FIR / Case No Input */}
       <div className="mt-4">
         <label className="mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400">FIR / NCRP complaint reference</label>
-        <div className="glass-input flex items-center gap-2 rounded-xl px-3.5 py-2.5 focus-within:border-[#d8b84d] transition">
-          <Search size={14} className="text-slate-400 dark:text-slate-500 shrink-0" />
+        <div className="glass-input flex items-center gap-3 rounded-xl px-4 py-2.5 transition">
+          <Search size={15} className="text-[#E5B83B] shrink-0" />
           <input
             value={firNo}
             onChange={(e) => setFirNo(e.target.value)}
-            className="mono w-full bg-transparent text-sm text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
+            className="mono w-full bg-transparent text-sm text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 font-mono"
             placeholder="e.g. SIH/2026/00412"
           />
         </div>

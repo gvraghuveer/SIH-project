@@ -17,7 +17,7 @@ function rotatePoint(point, yAngle, zAngle) {
   };
 }
 
-export function ChakravyuhLogo() {
+export function ChakravyuhLogo({ showMeta = true, subtitle = "NATIONAL ATTRIBUTION" }) {
   const canvasRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -107,12 +107,24 @@ export function ChakravyuhLogo() {
     <div className="cv-brand flex min-w-0 items-center gap-2.5 sm:gap-3" aria-label="Chakravyuh">
       <canvas
         ref={canvasRef}
-        className="h-[42px] w-[42px] shrink-0"
+        className="h-[38px] w-[38px] sm:h-[42px] sm:w-[42px] shrink-0"
         aria-hidden="true"
       />
-      <span className="cv-brand-word font-bold uppercase text-white">
-        CHAKRAVYUH
-      </span>
+      <div className="flex flex-col justify-center min-w-0 text-left">
+        <span className="cv-brand-word font-extrabold uppercase text-white text-[13px] sm:text-[15px] tracking-[0.18em] leading-tight select-none">
+          CHAKRAVYUH
+        </span>
+        {showMeta && (
+          <div className="cv-brand-meta-lockup flex items-center gap-1.5 mt-0.5 select-none">
+            <span className="cv-i4c-badge inline-flex items-center justify-center px-1.5 py-0.5 rounded-[4px] border border-[#E5B83B]/50 bg-[#E5B83B]/15 text-[#FFE28A] text-[8px] sm:text-[8.5px] font-mono font-extrabold leading-none tracking-wider shadow-sm">
+              I4C
+            </span>
+            <span className="cv-meta-title text-[7.5px] sm:text-[8.5px] font-mono font-semibold tracking-[0.14em] text-[#8eaaa0] leading-none whitespace-nowrap">
+              {subtitle}
+            </span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

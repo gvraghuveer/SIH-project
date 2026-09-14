@@ -328,9 +328,8 @@ export function LandingPage() {
       <WorkspaceNav variant="landing" activeRoute={activeNav} onNavigate={handleWorkspaceNav} />
 
       {/* ── 300vh Scrub Scroll Canvas Section ── */}
-      <div id="hero" className="transform-gpu will-change-transform will-change-opacity" style={{ position: "relative", height: "300vh", willChange: "transform, opacity", transform: "translate3d(0, 0, 0)" }}>
+      <div id="hero" style={{ position: "relative", height: "300vh" }}>
         <section 
-          className="transform-gpu will-change-transform"
           style={{ 
             position: "sticky", 
             top: 0, 
@@ -341,11 +340,7 @@ export function LandingPage() {
             display: "grid", 
             gridTemplateRows: "96px minmax(0,1fr) 94px", 
             gridTemplateColumns: "minmax(0,1fr) auto auto", 
-            transition: "background 0.3s",
-            willChange: "transform",
-            transform: "translate3d(0, 0, 0)",
-            backfaceVisibility: "hidden",
-            WebkitBackfaceVisibility: "hidden"
+            transition: "background 0.3s"
           }}
         >
           

@@ -40,11 +40,6 @@ export const STEPS = [
 const LAST = STEPS.length - 1;
 const panel = "glass-panel admin-panel rounded-2xl";
 
-/**
- * The pipeline explainer: a pinned 3D deck the reader scrubs by scrolling.
- * Used both as a band inside the landing page and as the standalone route,
- * so the two can never drift apart.
- */
 export default function HowItWorksSection({ withIntro = true }) {
   const isCompact = () =>
     typeof window !== "undefined" &&
@@ -54,8 +49,6 @@ export default function HowItWorksSection({ withIntro = true }) {
   const [storedMode, setMode] = useState(() =>
     readPref("chakravyuh_hiw_mode") === "carousel" ? "carousel" : "scroll",
   );
-  // Phones and tablets always get the carousel — scroll-scrubbing a pinned 3D
-  // stage needs a wheel and a tall viewport, and has neither on a handset.
   const mode = compact ? "carousel" : storedMode;
 
   useEffect(() => {
@@ -68,6 +61,7 @@ export default function HowItWorksSection({ withIntro = true }) {
       window.removeEventListener("resize", sync);
     };
   }, []);
+
   const [slide, setSlide] = useState(0);
 
   const pickMode = (next) => {
@@ -154,90 +148,149 @@ export default function HowItWorksSection({ withIntro = true }) {
     };
   }, [mode]);
 
-  // Carousel drives the same --pos the scrubber does, one step at a time,
-  // so both modes share every transform in the stylesheet.
   useEffect(() => {
-    if (mode !== "carousel" || !stageRef.current) return;
-    stageRef.current.style.setProperty("--pos", String(slide));
+    if (mode !== "carousel" || !stageRef.current) return undefined;
+    const stage = stageRef.current;
+    let raf = 0;
+    let prev = performance.now();
+    target.current = slide;
+
+    const tick = (now) => {
+      const dt = Math.min(64, now - prev) || 16.7;
+      prev = now;
+      const diff = target.current - current.current;
+      current.current += diff * (1 - Math.exp(-dt / 70));
+      if (Math.abs(diff) < 0.0008) {
+        current.current = target.current;
+      } else {
+        raf = window.requestAnimationFrame(tick);
+      }
+      stage.style.setProperty("--pos", current.current.toFixed(4));
+    };
+
+    raf = window.requestAnimationFrame(tick);
     setActive(slide);
+    return () => {
+      if (raf) window.cancelAnimationFrame(raf);
+    };
   }, [mode, slide]);
 
-  const step = (delta) => setSlide((v) => Math.min(LAST, Math.max(0, v + delta)));
+  const step = (delta) => {
+    const next = Math.min(LAST, Math.max(0, slide + delta));
+    setSlide(next);
+  };
 
-  const scrollToStep = (i) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const docTop = el.getBoundingClientRect().top + window.scrollY;
-    const travel = el.offsetHeight - window.innerHeight;
-    if (travel <= 0) return;
-    window.scrollTo({ top: docTop + travel * (i / LAST), behavior: "smooth" });
+  const jumpTo = (i) => {
+    if (mode === "carousel") {
+      setSlide(i);
+    } else {
+      const el = trackRef.current;
+      if (!el) return;
+      const docTop = el.getBoundingClientRect().top + window.scrollY;
+      const travel = el.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+      window.scrollTo({ top: docTop + travel * (i / LAST), behavior: "smooth" });
+    }
   };
 
   const rail = (
     <div className="hiw-rail">
-              <div className="hiw-rail__line">
-                <span className="hiw-rail__fill" />
-              </div>
-              <button
-                type="button"
-                className="hiw-bot"
-                aria-label={`Open step ${active + 1}: ${STEPS[active]?.tag ?? ""}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (mode === "carousel") setSlide(active);
-                  else scrollToStep(active);
-                }}
-              >
-                <svg viewBox="0 0 32 34" width="30" height="32">
-                  <line x1="16" y1="1.5" x2="16" y2="6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                  <circle className="hiw-bot__antenna" cx="16" cy="2.4" r="2.1" fill="currentColor" />
-                  <rect x="4" y="6" width="24" height="18" rx="7" fill="var(--bot-shell)" stroke="currentColor" strokeWidth="1.6" />
-                  <rect x="8" y="11" width="16" height="8" rx="4" fill="var(--bot-visor)" />
-                  <circle className="hiw-bot__eye" cx="16" cy="15" r="2.4" fill="currentColor" />
-                  <path d="M4 14h-2.5M28 14h2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                  <path d="M11 24v3.5M21 24v3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-                  <ellipse className="hiw-bot__shadow" cx="16" cy="30" rx="8" ry="2" fill="currentColor" />
-                </svg>
-              </button>
-              {STEPS.map(({ tag }, i) => (
-                <button
-                  key={tag}
-                  type="button"
-                  className={`hiw-rail__stop ${i === active ? "is-active" : ""} ${i < active ? "is-done" : ""}`}
-                  onClick={() => (mode === "carousel" ? setSlide(i) : scrollToStep(i))}
-                >
-                  <span className="hiw-rail__dot" />
-                  <span className="hiw-rail__label">{`0${i + 1} · ${tag}`}</span>
-                </button>
-              ))}
-            </div>
+      <div className="hiw-rail__line">
+        <span className="hiw-rail__fill" />
+      </div>
+      
+      {/* ── Synchronized Scout Drone Character ── */}
+      <button
+        type="button"
+        className="hiw-bot"
+        aria-label={`Open step ${active + 1}: ${STEPS[active]?.tag ?? ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          jumpTo(active);
+        }}
+        title={`Click to focus Step ${active + 1}: ${STEPS[active]?.tag ?? ""}`}
+      >
+        <div className="hiw-bot__core">
+          <svg viewBox="0 0 36 36" width="32" height="32" className="hiw-bot-svg">
+            <defs>
+              <linearGradient id="droneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FFE28A" />
+                <stop offset="100%" stopColor="#E5B83B" />
+              </linearGradient>
+              <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#059669" />
+                <stop offset="100%" stopColor="#10B981" />
+              </linearGradient>
+            </defs>
+            <circle cx="18" cy="18" r="16" fill="rgba(229, 184, 59, 0.12)" stroke="rgba(229, 184, 59, 0.35)" strokeWidth="1" strokeDasharray="3 3" />
+            <line x1="18" y1="3" x2="18" y2="8" stroke="#FFE28A" strokeWidth="1.8" strokeLinecap="round" />
+            <circle cx="18" cy="3" r="2.2" fill="#FFE28A" className="hiw-bot__antenna" />
+            <rect x="6" y="8" width="24" height="20" rx="9" fill="#0A251D" stroke="url(#droneGrad)" strokeWidth="1.8" />
+            <rect x="9.5" y="13" width="17" height="9" rx="4.5" fill="url(#visorGrad)" stroke="#34D399" strokeWidth="0.8" />
+            <circle cx="18" cy="17.5" r="2.2" fill="#FFFFFF" className="hiw-bot__eye" />
+            <circle cx="13" cy="17.5" r="1" fill="#A7F3D0" />
+            <circle cx="23" cy="17.5" r="1" fill="#A7F3D0" />
+            <rect x="3" y="15" width="3.5" height="6" rx="1.5" fill="#FFE28A" />
+            <rect x="29.5" y="15" width="3.5" height="6" rx="1.5" fill="#FFE28A" />
+            <line x1="13" y1="28" x2="13" y2="32" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
+            <line x1="23" y1="28" x2="23" y2="32" stroke="#10B981" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </div>
+      </button>
 
+      {STEPS.map(({ tag }, i) => (
+        <button
+          key={tag}
+          type="button"
+          className={`hiw-rail__stop ${i === active ? "is-active" : ""} ${i < active ? "is-done" : ""}`}
+          onClick={() => jumpTo(i)}
+        >
+          <span className="hiw-rail__dot" />
+          <span className="hiw-rail__label">{`0${i + 1} · ${tag}`}</span>
+        </button>
+      ))}
+    </div>
   );
 
   const deck = (
     <div className="hiw-stage">
-              <div className="hiw-deck">
-                {STEPS.map(({ icon: Icon, tag, title, body, out }, i) => (
-                  <article
-                    key={tag}
-                    className={`${panel} hiw-slide ${i === active ? "is-active" : ""}`}
-                    style={{ "--i": i, zIndex: 10 - Math.abs(i - active) }}
-                    aria-hidden={i !== active}
-                  >
-                    <span className="hiw-slide__glow" aria-hidden="true" />
-                    <span className="hiw-slide__index" aria-hidden="true">{`0${i + 1}`}</span>
-                    <div className="hiw-slide__head hiw-layer" style={{ "--depth": 1 }}>
-                      <span className="hiw-slide__icon"><Icon size={16} /></span>
-                      <span className="hiw-slide__tag">{`Step 0${i + 1} · ${tag}`}</span>
-                    </div>
-                    <h3 className="hiw-slide__title hiw-layer" style={{ "--depth": 2.4 }}>{title}</h3>
-                    <p className="hiw-slide__body hiw-layer" style={{ "--depth": 3.6 }}>{body}</p>
-                    <div className="hiw-slide__out hiw-layer" style={{ "--depth": 5 }}>
-                      <span className="hiw-step-out-dot" /> {out}
-                    </div>
-                  </article>
-                ))}
-              </div>
+      <div className="hiw-deck">
+        {STEPS.map(({ icon: Icon, tag, title, body, out }, i) => (
+          <article
+            key={tag}
+            className={`${panel} hiw-slide ${i === active ? "is-active" : ""}`}
+            style={{ "--i": i, zIndex: 10 - Math.abs(i - active) }}
+            aria-hidden={i !== active}
+          >
+            <span className="hiw-slide__glow" aria-hidden="true" />
+            <span className="hiw-slide__index" aria-hidden="true">{`0${i + 1}`}</span>
+            
+            {/* Top Left Header with Parallax */}
+            <div className="hiw-slide__head hiw-layer" style={{ "--depth": 1 }}>
+              <span className="hiw-slide__icon">
+                <Icon size={16} strokeWidth={2.2} />
+              </span>
+              <span className="hiw-slide__tag">
+                {`STEP 0${i + 1} · ${tag}`}
+              </span>
+            </div>
+
+            {/* Title & Body with Parallax */}
+            <h3 className="hiw-slide__title hiw-layer" style={{ "--depth": 2.4 }}>
+              {title}
+            </h3>
+            <p className="hiw-slide__body hiw-layer" style={{ "--depth": 3.6 }}>
+              {body}
+            </p>
+
+            {/* Bottom Status Pill with Parallax */}
+            <div className="hiw-slide__out hiw-layer" style={{ "--depth": 5 }}>
+              <span className="hiw-step-out-dot" />
+              <span>{out}</span>
+            </div>
+          </article>
+        ))}
+      </div>
     </div>
   );
 
@@ -301,7 +354,7 @@ export default function HowItWorksSection({ withIntro = true }) {
                     className="hiw-stepper__dot"
                     aria-current={i === slide}
                     aria-label={`Step ${i + 1}: ${tag}`}
-                    onClick={() => setSlide(i)}
+                    onClick={() => jumpTo(i)}
                   />
                 ))}
               </div>
@@ -316,3 +369,4 @@ export default function HowItWorksSection({ withIntro = true }) {
     </>
   );
 }
+

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { 
-  Activity, ArrowLeft, ArrowRight, Bell, BookOpen, ChevronDown, Clock3, Command, Home, 
+  Activity, ArrowLeft, ArrowRight, Bell, BookOpen, ChevronDown, Clock3, Command, 
   ExternalLink, FileText, Layers, LogOut, Menu, Moon, Palette, Search, Settings, 
   Shield, ShieldCheck, Sparkles, Sun, User, Wifi, X, Zap 
 } from "lucide-react";
@@ -10,7 +10,6 @@ import ChakravyuhLogo from "./ChakravyuhLogo.jsx";
 import { useTheme } from "../lib/ThemeContext.jsx";
 
 const workspaceLinks = [
-  { id: "landing", label: "Home", icon: Home },
   { id: "workspace", label: "Live Attribution", icon: Activity },
   { id: "watchlist", label: "Watchlist", icon: Shield },
   { id: "dossier", label: "Legal Dossier", icon: FileText },
@@ -18,7 +17,6 @@ const workspaceLinks = [
 ];
 
 const landingNavLinks = [
-  { id: "landing", label: "Home", icon: Home },
   { id: "evidence", label: "Active Stream", icon: Zap },
   { id: "how-it-works", label: "How It Works", icon: Sparkles },
 ];
@@ -43,6 +41,18 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
 
   const notifRef = useRef(null);
   const settingsRef = useRef(null);
+
+  // Global ⌘K / Ctrl+K listener
+  useEffect(() => {
+    const handleGlobalSearchKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+        e.preventDefault();
+        setIsSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleGlobalSearchKey);
+    return () => window.removeEventListener("keydown", handleGlobalSearchKey);
+  }, []);
 
   // Live IST Clock
   useEffect(() => {
@@ -216,55 +226,51 @@ export function WorkspaceNav({ activeRoute, onNavigate, variant = "workspace" })
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             type="button"
-            className="cv-brand-button"
+            className="cv-brand-button cursor-pointer"
             onClick={() => onNavigate("landing")}
-            aria-label="Go to landing page"
+            aria-label="Go to home"
           >
-            <div className="cv-dashboard-brand">
-              <ChakravyuhLogo />
-              <span className="cv-dashboard-brand-meta">
-                <b>I4C</b>
-                NATIONAL ATTRIBUTION
-              </span>
-            </div>
+            <ChakravyuhLogo />
           </motion.button>
         </div>
 
         {/* Center: Floating Dock Pill Menu */}
         <div className="flex items-center justify-center">
           {navLinks.length > 0 && (
-            <nav className="cv-dock-pill relative" aria-label="Primary navigation">
-              {navLinks.map(({ id, label, icon: Icon }) => {
-                const isActive = activeRoute === id;
-                return (
-                  <motion.button
-                    type="button"
-                    key={id}
-                    whileTap={{ scale: 0.94 }}
-                    className={`cv-dock-link relative z-10 ${isActive ? "cv-dock-link--active" : "text-slate-400 hover:text-slate-200"}`}
-                    onClick={() => { onNavigate(id); setMobileOpen(false); }}
-                    title={label}
-                  >
-                    <div className={`cv-dock-icon-tile ${isActive ? "cv-dock-icon-tile--active" : ""}`}>
-                      <Icon size={14} strokeWidth={2.2} />
-                    </div>
-                    <span className="cv-dock-label">{label}</span>
-                    
-                    {isActive && (
-                      <motion.div
-                        layoutId="cv-dock-active-pill"
-                        className="cv-dock-active-pill absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-[#006039] to-[#059669] border border-[#E5B83B]/60 shadow-[0_0_20px_rgba(16,185,129,0.4),0_0_12px_rgba(229,184,59,0.35)]"
-                        transition={{
-                          type: "spring",
-                          stiffness: 450,
-                          damping: 32,
-                        }}
-                      />
-                    )}
-                  </motion.button>
-                );
-              })}
-            </nav>
+            <LayoutGroup id="cv-dock-nav">
+              <nav className="cv-dock-pill relative" aria-label="Primary navigation">
+                {navLinks.map(({ id, label, icon: Icon }) => {
+                  const isActive = activeRoute === id;
+                  return (
+                    <motion.button
+                      type="button"
+                      key={id}
+                      whileTap={{ scale: 0.94 }}
+                      className={`cv-dock-link relative z-10 ${isActive ? "cv-dock-link--active" : "text-slate-400 hover:text-slate-200"}`}
+                      onClick={() => { onNavigate(id); setMobileOpen(false); }}
+                      title={label}
+                    >
+                      <div className={`cv-dock-icon-tile ${isActive ? "cv-dock-icon-tile--active" : ""}`}>
+                        <Icon size={14} strokeWidth={2.2} />
+                      </div>
+                      <span className="cv-dock-label">{label}</span>
+                      
+                      {isActive && (
+                        <motion.div
+                          layoutId="cv-dock-active-pill"
+                          className="cv-dock-active-pill absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-[#006039] to-[#059669] border border-[#E5B83B]/60 shadow-[0_0_20px_rgba(16,185,129,0.4),0_0_12px_rgba(229,184,59,0.35)]"
+                          transition={{
+                            type: "spring",
+                            stiffness: 500,
+                            damping: 36,
+                          }}
+                        />
+                      )}
+                    </motion.button>
+                  );
+                })}
+              </nav>
+            </LayoutGroup>
           )}
 
           {isAuth && (

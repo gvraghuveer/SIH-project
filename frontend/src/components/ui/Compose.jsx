@@ -72,8 +72,8 @@ export default function Compose({
 
   return (
     <div className={`relative ${className}`} onClick={(event) => event.stopPropagation()}>
-      <div className="glass-input flex items-center gap-3 rounded-xl px-4 py-3">
-        <AtSign className="h-4 w-4 shrink-0 text-slate-500" />
+      <div className="glass-input flex items-center gap-3 rounded-xl px-4 py-2.5">
+        <AtSign className="h-4 w-4 shrink-0 text-[#E5B83B]" />
         <textarea
           ref={textareaRef}
           value={text}
@@ -84,9 +84,9 @@ export default function Compose({
           onKeyDown={handleKeyDown}
           onKeyUp={refreshTrigger}
           onClick={refreshTrigger}
-          className="mono min-h-6 flex-1 resize-none bg-transparent text-sm text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-600"
+          className="mono min-h-6 flex-1 resize-none bg-transparent text-sm text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-400 dark:placeholder:text-slate-500 font-mono leading-normal"
         />
-        {text && <span className="text-xs text-slate-400 dark:text-slate-600">⌘↵</span>}
+        {text && <span className="text-[11px] font-mono text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded bg-white/5 border border-white/10">⌘↵</span>}
       </div>
       {trigger && results.length > 0 && (
         <div className="glass-panel absolute left-0 right-0 top-full z-30 mt-2 rounded-xl p-2 shadow-2xl">

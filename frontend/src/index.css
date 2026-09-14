@@ -264,82 +264,95 @@ html:not(.light) [class*="border-cyan"], html:not(.light) [class*="border-blue"]
 @keyframes parallax-float { from { opacity: .45; transform: translateY(34px) scale(.97); } to { opacity: 1; transform: translateY(-24px) scale(1); } } @keyframes scroll-reveal { from { opacity: 0; transform: translateY(36px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .parallax-layer, .scroll-reveal { animation: none; } }
 
-/* ── Previous Yellow Gold Luxury Gradient Buttons (Rolex Theme) ──── */
+/* ── Luxury Gradient & Glow Buttons (Rolex Theme & Ambient Symmetrical Halos) ──── */
 .rolex-gold-btn,
 .rolex-btn-gold,
 .btn-gold-gradient {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  border-radius: 12px !important;
-  padding: 10px 22px !important;
-  background: linear-gradient(180deg, #e5c96a 0%, #d8b84d 100%) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fae494 0%, #d8b84d 100%) !important;
   color: #08160c !important;
-  border: 1px solid rgba(255, 243, 196, 0.5) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.75) !important;
-  box-shadow: 0 4px 14px rgba(216, 184, 77, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
+  border: 1px solid rgba(255, 243, 196, 0.6) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 0 14px rgba(229, 184, 59, 0.3) !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .rolex-gold-btn:hover,
 .rolex-btn-gold:hover,
 .btn-gold-gradient:hover {
-  background: linear-gradient(180deg, #f0d880 0%, #e5c96a 100%) !important;
-  border-top-color: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 6px 20px rgba(216, 184, 77, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
-  transform: translateY(-1.5px) !important;
+  background: linear-gradient(180deg, #fff0aa 0%, #e5c96a 100%) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(229, 184, 59, 0.55) !important;
+  transform: translateY(-1px);
 }
 
 .rolex-gold-btn:active,
 .rolex-btn-gold:active,
 .btn-gold-gradient:active {
-  transform: translateY(1px) !important;
-  box-shadow: 0 2px 8px rgba(216, 184, 77, 0.2) !important;
+  transform: translateY(0.5px);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 1px 1px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(229, 184, 59, 0.25) !important;
 }
 
 .rolex-green-btn,
 .rolex-btn-green,
 .btn-green-gradient {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 8px !important;
-  border-radius: 12px !important;
-  padding: 10px 22px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 12px;
   background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
   color: #FFFFFF !important;
   border: 1px solid rgba(110, 231, 183, 0.6) !important;
-  border-top: 1.5px solid rgba(255, 255, 255, 0.85) !important;
-  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 0 14px rgba(16, 185, 129, 0.25) !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.02em !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35) !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 0 14px rgba(16, 185, 129, 0.35) !important;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .rolex-green-btn:hover,
 .rolex-btn-green:hover,
 .btn-green-gradient:hover {
   background: linear-gradient(180deg, #34d399 0%, #10b981 100%) !important;
-  border-top-color: #FFFFFF !important;
-  border-color: rgba(167, 243, 208, 0.9) !important;
-  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.65), inset 0 1px 1px #FFFFFF, 0 0 22px rgba(52, 211, 153, 0.5) !important;
-  transform: translateY(-1.5px) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 22px rgba(52, 211, 153, 0.6) !important;
+  transform: translateY(-1px);
   color: #FFFFFF !important;
 }
 
 .rolex-green-btn:active,
 .rolex-btn-green:active,
 .btn-green-gradient:active {
-  transform: translateY(1px) !important;
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3) !important;
+  transform: translateY(0.5px);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 1px 1px rgba(0, 0, 0, 0.2),
+    0 0 8px rgba(16, 185, 129, 0.25) !important;
 }
 
 .rolex-gold-text {
@@ -409,12 +422,23 @@ html.light .drawer-close:hover {
 
 /* ==========================================================================
    GLASSMORPHISM CONDITIONAL TRANSPARENCY SYSTEM
-   - When ENABLED (.glass-mode-active): Show translucency & blur
-   - When DISABLED (html:not(.glass-mode-active)): 100% Solid Opaque (No transparency)
+   - When ENABLED (.glass-mode-active): Show deep frosted translucency, ambient aura, specular highlights & blur
+   - When DISABLED (html:not(.glass-mode-active)): 100% Solid Opaque (Crisp matte surfaces)
    ========================================================================== */
 
 /* ── 1. Glass Mode ENABLED (Transparent & Blurred) ── */
+.glass-mode-active .workspace-shell,
+.glass-mode-active .setu-shell,
+.glass-mode-active .setu-app {
+  background: 
+    radial-gradient(ellipse 65% 55% at 20% 15%, rgba(16, 185, 129, 0.2), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 85% 25%, rgba(229, 184, 59, 0.16), transparent 60%),
+    radial-gradient(ellipse 65% 55% at 50% 90%, rgba(5, 150, 105, 0.18), transparent 65%),
+    #03120C !important;
+}
+
 .glass-mode-active .glass-panel,
+.glass-mode-active .admin-panel,
 .glass-mode-active .metric-card,
 .glass-mode-active .latency-card,
 .glass-mode-active .profile-card,
@@ -435,15 +459,111 @@ html.light .drawer-close:hover {
 .glass-mode-active .setu-glass,
 .glass-mode-active .setu-dash-frame,
 .glass-mode-active .setu-dash-body > div,
-.glass-mode-active .setu-segmented,
+.glass-mode-active .setu-segmented {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(4, 26, 18, 0.55) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(16, 185, 129, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(229, 184, 59, 0.1) !important;
+}
+
+/* Glass Inputs & Interactive Sub-Containers */
+.glass-input {
+  background: rgba(6, 24, 16, 0.75) !important;
+  background-color: rgba(6, 24, 16, 0.75) !important;
+  border: 1px solid rgba(109, 157, 126, 0.4) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45), 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.glass-input:hover {
+  border-color: rgba(229, 184, 59, 0.55) !important;
+  background-color: rgba(8, 30, 20, 0.85) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.45), 0 0 12px rgba(229, 184, 59, 0.15) !important;
+}
+
+.glass-input:focus-within {
+  border-color: #E5B83B !important;
+  background-color: rgba(9, 36, 24, 0.95) !important;
+  box-shadow: 
+    0 0 0 1px #E5B83B,
+    0 0 16px rgba(229, 184, 59, 0.3),
+    inset 0 1px 3px rgba(0, 0, 0, 0.45) !important;
+}
+
 .glass-mode-active .glass-input {
-  background: rgba(6, 26, 18, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background: rgba(4, 30, 20, 0.6) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 18px rgba(0, 0, 0, 0.25) !important;
+}
+
+.glass-mode-active .glass-input:hover {
+  border-color: rgba(229, 184, 59, 0.6) !important;
+  background: rgba(4, 36, 24, 0.75) !important;
+  box-shadow: 0 0 14px rgba(229, 184, 59, 0.2) !important;
+}
+
+.glass-mode-active .glass-input:focus-within {
+  border-color: rgba(229, 184, 59, 0.9) !important;
+  background: rgba(4, 40, 26, 0.85) !important;
+  box-shadow: 
+    0 0 0 1px #E5B83B,
+    0 0 20px rgba(229, 184, 59, 0.35),
+    inset 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.glass-input input,
+.glass-input textarea,
+.glass-input select,
+html:not(.glass-mode-active) .glass-input input,
+html:not(.glass-mode-active) .glass-input textarea,
+html:not(.glass-mode-active) .glass-input select,
+.glass-mode-active .glass-input input,
+.glass-mode-active .glass-input textarea,
+.glass-mode-active .glass-input select,
+html.light .glass-input input,
+html.light .glass-input textarea,
+html.light .glass-input select {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+}
+
+.glass-mode-active input:not(.glass-input input):not([type="checkbox"]):not([type="radio"]),
+.glass-mode-active textarea:not(.glass-input textarea),
+.glass-mode-active select:not(.glass-input select) {
+  background: rgba(4, 30, 20, 0.55) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+}
+
+/* Light Mode Glassmorphism */
+html.light.glass-mode-active .workspace-shell,
+html.light.glass-mode-active .setu-shell,
+html.light.glass-mode-active .setu-app {
+  background: 
+    radial-gradient(ellipse 70% 55% at 20% 15%, rgba(11, 95, 165, 0.12), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 85% 25%, rgba(16, 185, 129, 0.1), transparent 60%),
+    #F4F7FB !important;
 }
 
 html.light.glass-mode-active .glass-panel,
+html.light.glass-mode-active .admin-panel,
 html.light.glass-mode-active .metric-card,
 html.light.glass-mode-active .latency-card,
 html.light.glass-mode-active .profile-card,
@@ -464,16 +584,38 @@ html.light.glass-mode-active .cv-mobile-dropdown,
 html.light.glass-mode-active .setu-glass,
 html.light.glass-mode-active .setu-dash-frame,
 html.light.glass-mode-active .setu-dash-body > div,
-html.light.glass-mode-active .setu-segmented,
-html.light.glass-mode-active .glass-input {
+html.light.glass-mode-active .setu-segmented {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.65) 100%) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 
+    0 18px 45px -10px rgba(11, 95, 165, 0.12),
+    inset 0 1px 0 #FFFFFF,
+    inset 0 -1px 0 rgba(11, 95, 165, 0.08) !important;
+}
+
+html.light.glass-mode-active .glass-input,
+html.light.glass-mode-active input:not([type="checkbox"]):not([type="radio"]),
+html.light.glass-mode-active textarea,
+html.light.glass-mode-active select {
   background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(203, 213, 225, 0.85) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(203, 213, 225, 0.9) !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  color: #0F172A !important;
 }
 
 /* ── 2. Glass Mode DISABLED (100% Solid & Opaque - Zero Transparency) ── */
+html:not(.glass-mode-active) .workspace-shell,
+html:not(.glass-mode-active) .setu-shell,
+html:not(.glass-mode-active) .setu-app {
+  background: #04140D !important;
+}
+
 html:not(.glass-mode-active) .glass-panel,
+html:not(.glass-mode-active) .admin-panel,
 html:not(.glass-mode-active) .metric-card,
 html:not(.glass-mode-active) .latency-card,
 html:not(.glass-mode-active) .profile-card,
@@ -495,17 +637,34 @@ html:not(.glass-mode-active) .setu-glass,
 html:not(.glass-mode-active) .setu-dash-frame,
 html:not(.glass-mode-active) .setu-dash-body > div,
 html:not(.glass-mode-active) .setu-segmented,
-html:not(.glass-mode-active) .glass-input,
 html:not(.glass-mode-active) .cv-action-button,
 html:not(.glass-mode-active) .cv-profile-button {
-  background-color: #061711 !important;
+  background-color: #071f16 !important;
   background-image: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(109, 157, 126, 0.28) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+html:not(.glass-mode-active) input:not(.glass-input input):not([type="checkbox"]):not([type="radio"]),
+html:not(.glass-mode-active) textarea:not(.glass-input textarea),
+html:not(.glass-mode-active) select:not(.glass-input select) {
+  background-color: #03130d !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(109, 157, 126, 0.3) !important;
+  box-shadow: none !important;
+}
+
+html.light:not(.glass-mode-active) .workspace-shell,
+html.light:not(.glass-mode-active) .setu-shell,
+html.light:not(.glass-mode-active) .setu-app {
+  background: #F8FAFC !important;
 }
 
 html.light:not(.glass-mode-active) .glass-panel,
+html.light:not(.glass-mode-active) .admin-panel,
 html.light:not(.glass-mode-active) .metric-card,
 html.light:not(.glass-mode-active) .latency-card,
 html.light:not(.glass-mode-active) .profile-card,
@@ -527,7 +686,6 @@ html.light:not(.glass-mode-active) .setu-glass,
 html.light:not(.glass-mode-active) .setu-dash-frame,
 html.light:not(.glass-mode-active) .setu-dash-body > div,
 html.light:not(.glass-mode-active) .setu-segmented,
-html.light:not(.glass-mode-active) .glass-input,
 html.light:not(.glass-mode-active) .cv-action-button,
 html.light:not(.glass-mode-active) .cv-profile-button {
   background-color: #FFFFFF !important;
@@ -535,6 +693,16 @@ html.light:not(.glass-mode-active) .cv-profile-button {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(203, 213, 225, 0.9) !important;
+}
+
+html.light:not(.glass-mode-active) .glass-input,
+html.light:not(.glass-mode-active) input:not([type="checkbox"]):not([type="radio"]),
+html.light:not(.glass-mode-active) textarea,
+html.light:not(.glass-mode-active) select {
+  background-color: #F1F5F9 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid #CBD5E1 !important;
 }
 
 /* Glossy Action Toggles (Theme Switcher & Glass Switcher) */
@@ -636,33 +804,38 @@ html.light .cv-action-button:hover {
 
 .setu-btn-primary {
   color: #08160c !important;
-  background: linear-gradient(180deg, #e5c96a 0%, #d8b84d 100%) !important;
-  border: 1px solid rgba(255, 243, 196, 0.5) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.75) !important;
-  box-shadow: 0 4px 14px rgba(216, 184, 77, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  background: linear-gradient(180deg, #fae494 0%, #d8b84d 100%) !important;
+  border: 1px solid rgba(255, 243, 196, 0.6) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 0 14px rgba(229, 184, 59, 0.3) !important;
   font-weight: 700 !important;
 }
 
 .setu-btn-primary:hover {
-  transform: translateY(-1.5px);
-  background: linear-gradient(180deg, #f0d880 0%, #e5c96a 100%) !important;
-  border-top-color: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 6px 20px rgba(216, 184, 77, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #fff0aa 0%, #e5c96a 100%) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(229, 184, 59, 0.55) !important;
 }
 
 .setu-btn-ghost {
   border: 1px solid rgba(216, 184, 77, 0.35) !important;
   color: #d8b84d !important;
   background: rgba(216, 184, 77, 0.06) !important;
-  border-radius: 12px !important;
+  border-radius: 12px;
 }
 
 .setu-btn-ghost:hover {
   border-color: rgba(216, 184, 77, 0.75) !important;
   color: #FFE28A !important;
   background: rgba(216, 184, 77, 0.15) !important;
-  transform: translateY(-1.5px);
-  box-shadow: 0 6px 18px rgba(216, 184, 77, 0.2) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(216, 184, 77, 0.25) !important;
 }
 
 .setu-radar-outer {
@@ -1109,7 +1282,7 @@ html.light .mempool-status > span {
   align-items: center; 
   gap: 6px; 
   border: 1px solid rgba(216, 184, 77, 0.35) !important; 
-  border-radius: 9999px !important; 
+  border-radius: 9999px; 
   padding: 8px 16px; 
   color: #d8b84d !important; 
   background: rgba(216, 184, 77, 0.06) !important; 
@@ -1123,31 +1296,36 @@ html.light .mempool-status > span {
   color: #FFE28A !important; 
   border-color: rgba(216, 184, 77, 0.75) !important; 
   background: rgba(216, 184, 77, 0.15) !important; 
-  transform: translateY(-1.5px);
-  box-shadow: 0 6px 18px rgba(216, 184, 77, 0.2) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 0 14px rgba(216, 184, 77, 0.25) !important;
 }
 .cv-signup-btn { 
   display: inline-flex; 
   align-items: center; 
   gap: 6px; 
-  border: 1px solid rgba(255, 243, 196, 0.5) !important; 
-  border-top: 1px solid rgba(255, 255, 255, 0.75) !important;
-  border-radius: 9px !important; 
+  border: 1px solid rgba(255, 243, 196, 0.6) !important; 
+  border-radius: 9px; 
   padding: 8px 16px; 
   color: #08160c !important; 
-  background: linear-gradient(180deg, #e5c96a 0%, #d8b84d 100%) !important; 
+  background: linear-gradient(180deg, #fae494 0%, #d8b84d 100%) !important; 
   font: 700 10px/1 "IBM Plex Mono", monospace; 
   text-decoration: none; 
   white-space: nowrap; 
   cursor: pointer; 
-  box-shadow: 0 4px 14px rgba(216, 184, 77, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 0 12px rgba(229, 184, 59, 0.3) !important;
   transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); 
 }
 .cv-signup-btn:hover { 
-  background: linear-gradient(180deg, #f0d880 0%, #e5c96a 100%) !important; 
-  border-top-color: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 6px 20px rgba(216, 184, 77, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important; 
-  transform: translateY(-1.5px); 
+  background: linear-gradient(180deg, #fff0aa 0%, #e5c96a 100%) !important; 
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 18px rgba(229, 184, 59, 0.55) !important; 
+  transform: translateY(-1px); 
 }
 /* Ensure sections don't hide under the floating glass pill nav when scrolled to */
 .setu-app .setu-section { scroll-margin-top: 90px; }
@@ -1161,11 +1339,27 @@ html.light .mempool-status > span {
 .brand-lockup small { display: block; margin-top: 3px; color: #8eaaa0; font-size: 8px; letter-spacing: .15em; }
 .landing-links { display: flex; gap: 1.5rem; } .landing-links button { border: 0; color: #8eaaa0; background: transparent; font-size: 12px; transition: color .2s; } .landing-links button:hover { color: #d8b84d; }
 .landing-actions { display: flex; align-items: center; gap: 14px; } .text-btn, .back-link { border: 0; background: transparent; color: #8eaaa0; font-size: 12px; } .text-btn:hover, .back-link:hover { color: #d8b84d; }
-.primary-btn, .secondary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 10px !important; padding: 10px 18px; font-size: 12px; font-weight: 700; text-decoration: none; transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); } 
-.primary-btn { background: linear-gradient(180deg, #e5c96a 0%, #d8b84d 100%) !important; color: #08160c !important; border: 1px solid rgba(255, 243, 196, 0.5) !important; border-top: 1px solid rgba(255, 255, 255, 0.75) !important; box-shadow: 0 4px 14px rgba(216, 184, 77, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important; } 
-.primary-btn:hover { transform: translateY(-1.5px); background: linear-gradient(180deg, #f0d880 0%, #e5c96a 100%) !important; border-top-color: rgba(255, 255, 255, 0.95) !important; box-shadow: 0 6px 20px rgba(216, 184, 77, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important; } 
+.primary-btn, .secondary-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; border-radius: 10px; padding: 10px 18px; font-size: 12px; font-weight: 700; text-decoration: none; transition: all .25s cubic-bezier(0.16, 1, 0.3, 1); } 
+.primary-btn { 
+  background: linear-gradient(180deg, #fae494 0%, #d8b84d 100%) !important; 
+  color: #08160c !important; 
+  border: 1px solid rgba(255, 243, 196, 0.6) !important; 
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 0 14px rgba(229, 184, 59, 0.3) !important; 
+} 
+.primary-btn:hover { 
+  transform: translateY(-1px); 
+  background: linear-gradient(180deg, #fff0aa 0%, #e5c96a 100%) !important; 
+  border-color: rgba(255, 255, 255, 0.9) !important; 
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(229, 184, 59, 0.55) !important; 
+} 
 .secondary-btn { border: 1px solid rgba(216, 184, 77, .35) !important; color: #d8b84d !important; background: rgba(216, 184, 77, .06) !important; } 
-.secondary-btn:hover { border-color: rgba(216, 184, 77, .75) !important; color: #FFE28A !important; background: rgba(216, 184, 77, .15) !important; transform: translateY(-1.5px); box-shadow: 0 6px 18px rgba(216, 184, 77, .2) !important; } 
+.secondary-btn:hover { border-color: rgba(216, 184, 77, .75) !important; color: #FFE28A !important; background: rgba(216, 184, 77, .15) !important; transform: translateY(-1px); box-shadow: 0 0 14px rgba(216, 184, 77, .25) !important; } 
 .primary-btn-large { padding: 13px 26px; font-size: 13px; }
 .landing-hero { position: relative; display: grid; min-height: 720px; grid-template-columns: minmax(0, 1fr) minmax(380px, .9fr); align-items: center; gap: 4rem; max-width: 1320px; margin: auto; padding: 6rem clamp(1.2rem, 5vw, 5rem) 7rem; }
 .hero-content { position: relative; z-index: 2; } .hero-content h1, .auth-visual h1 { margin: 1.1rem 0; font-size: clamp(3.5rem, 7vw, 7rem); line-height: .91; letter-spacing: -.075em; color: #f8fafc; } .hero-content h1 em, .auth-visual h1 em { color: #22d3ee; font-style: normal; } .hero-content p { max-width: 590px; color: #94a3b8; font-size: 16px; line-height: 1.7; } .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 2rem; } .hero-trust { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 2rem; color: #64748b; font-size: 10px; } .hero-trust span { display: flex; align-items: center; gap: 5px; } .hero-trust svg { color: #34d399; }
@@ -1549,7 +1743,10 @@ html.light .mempool-status > span {
     inset 0 -1px 0 rgba(216, 184, 77, 0.12);
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: 
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
   transform: translateX(-50%);
 }
 
@@ -1628,7 +1825,7 @@ html.light .mempool-status > span {
   letter-spacing: 0.02em;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.2s ease;
 }
 
 .cv-dock-icon-tile {
@@ -1641,20 +1838,17 @@ html.light .mempool-status > span {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #8eaaa0;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .cv-dock-link:hover {
   color: #f4f7ef;
-  background: rgba(255, 255, 255, 0.07);
-  transform: translateY(-1px);
 }
 
 .cv-dock-link:hover .cv-dock-icon-tile {
   color: #10b981;
   background: rgba(16, 185, 129, 0.16);
   border-color: rgba(16, 185, 129, 0.4);
-  transform: scale(1.08);
 }
 
 .cv-dock-link--active {
@@ -2849,9 +3043,11 @@ html.light .cv-signup-btn {
   background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%) !important;
   color: #FFFFFF !important;
   border: 1px solid rgba(217, 119, 6, 0.6) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.7) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  border-radius: 12px;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset,
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 0 12px rgba(217, 119, 6, 0.28) !important;
   font-weight: 700 !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
@@ -2863,9 +3059,12 @@ html.light .primary-btn:hover,
 html.light .setu-btn-primary:hover,
 html.light .cv-signup-btn:hover {
   background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%) !important;
-  border-top-color: #FFFFFF !important;
-  transform: translateY(-1.5px) !important;
-  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    0 0 18px rgba(217, 119, 6, 0.45) !important;
 }
 
 html.light .rolex-gold-btn:active,
@@ -2874,8 +3073,11 @@ html.light .btn-gold-gradient:active,
 html.light .primary-btn:active,
 html.light .setu-btn-primary:active,
 html.light .cv-signup-btn:active {
-  transform: translateY(1px) !important;
-  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.2) !important;
+  transform: translateY(0.5px) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 1px 1px rgba(0, 0, 0, 0.15),
+    0 0 8px rgba(217, 119, 6, 0.2) !important;
 }
 
 /* Rolex Green Button in Light Mode: Previous Emerald Gradient */
@@ -2885,9 +3087,11 @@ html.light .btn-green-gradient {
   background: linear-gradient(180deg, #059669 0%, #047857 100%) !important;
   color: #FFFFFF !important;
   border: 1px solid rgba(5, 150, 105, 0.6) !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.6) !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+  border-radius: 12px;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset,
+    0 1px 2px rgba(0, 0, 0, 0.15),
+    0 0 12px rgba(5, 150, 105, 0.28) !important;
   font-weight: 700 !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
 }
@@ -2896,16 +3100,22 @@ html.light .rolex-green-btn:hover,
 html.light .rolex-btn-green:hover,
 html.light .btn-green-gradient:hover {
   background: linear-gradient(180deg, #10b981 0%, #059669 100%) !important;
-  border-top-color: #FFFFFF !important;
-  transform: translateY(-1.5px) !important;
-  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.9) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 2px 4px rgba(0, 0, 0, 0.15),
+    0 0 18px rgba(16, 185, 129, 0.45) !important;
 }
 
 html.light .rolex-green-btn:active,
 html.light .rolex-btn-green:active,
 html.light .btn-green-gradient:active {
-  transform: translateY(1px) !important;
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2) !important;
+  transform: translateY(0.5px) !important;
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 1px 1px rgba(0, 0, 0, 0.15),
+    0 0 8px rgba(5, 150, 105, 0.2) !important;
 }
 
 /* Action Toggles, Profile Buttons & Chips in Light Mode */
@@ -3299,11 +3509,6 @@ html.light .demo-cred-btn:hover { border-color: rgba(11, 95, 165, .5) !important
 :root { --radar-strength: 0.34; }
 html.light .ambient-radar { opacity: .24 !important; }
 
-/* ── Brand lockup: the agency tag sits under the wordmark, not beside it ── */
-.cv-dashboard-brand { flex-direction: column; align-items: flex-start; gap: 3px; }
-.cv-dashboard-brand-meta { padding-left: 54px; font-size: 7.5px; letter-spacing: .1em; }
-.cv-dashboard-brand-meta b { padding: 2px 4px; font-size: 7.5px; }
-
 /* ── Evidence ledger header chrome ── */
 .ledger-count-pill { border: 1px solid rgba(229, 184, 59, .35); background: rgba(8, 38, 27, .8); color: #ffe28a; }
 .ledger-icon-tile { border: 1px solid rgba(229, 184, 59, .4); background: rgba(229, 184, 59, .2); color: #e5b83b; }
@@ -3558,25 +3763,76 @@ html.light .auth-split__art { background: radial-gradient(120% 90% at 70% 20%, #
 .hiw-rail__line { position: absolute; top: 40px; left: 12.5%; right: 12.5%; height: 2px; border-radius: 2px; background: rgba(229,184,59,.18); }
 .hiw-rail__fill { position: absolute; inset: 0 auto 0 0; width: calc(var(--pos, 0) / 3 * 100%); border-radius: 2px; background: linear-gradient(90deg, rgba(229,184,59,.5), #e5b83b); }
 .hiw-rail__stop { position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; border: 0; background: transparent; cursor: pointer; text-align: center; }
-.hiw-rail__dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(229,184,59,.4); background: #0a1f18; transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease, box-shadow .35s ease; }
-.hiw-rail__stop.is-done .hiw-rail__dot { border-color: #e5b83b; }
-.hiw-rail__stop.is-active .hiw-rail__dot { border-color: #e5b83b; transform: scale(1.35); box-shadow: 0 0 0 7px rgba(229,184,59,.16); }
+.hiw-rail__dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid rgba(229,184,59,.4); background: #0a1f18; transition: transform .35s cubic-bezier(.16,1,.3,1), border-color .35s ease, box-shadow .35s ease, background-color .35s ease; }
+.hiw-rail__stop.is-done .hiw-rail__dot { border-color: #e5b83b; background: rgba(229,184,59,0.3); }
+.hiw-rail__stop.is-active .hiw-rail__dot { border-color: #e5b83b; background: #e5b83b; transform: scale(1.35); box-shadow: 0 0 0 7px rgba(229,184,59,.2), 0 0 16px rgba(229,184,59,.5); }
 .hiw-rail__label { color: #8eaaa0; font: 700 9.5px/1.3 "IBM Plex Mono", monospace; letter-spacing: .1em; text-transform: uppercase; transition: color .35s ease; }
 .hiw-rail__stop.is-active .hiw-rail__label { color: #ffe28a; }
 
-.hiw-bot { position: absolute; top: 25px; left: 12.5%; z-index: 6; width: 18px; height: 18px; margin-left: -4px; border: 0; padding: 0; background: transparent; cursor: pointer; color: #e5b83b; transform: translate3d(calc(var(--pos, 0) * 280%), 0, 0); will-change: transform; }
-.hiw-bot svg { display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); transition: transform .2s ease; }
-.hiw-bot.is-clicking svg { transform: scale(.82); }
-.hiw-bot::after { content: ""; position: absolute; top: 1px; left: -1px; width: 18px; height: 18px; border: 2px solid currentColor; border-radius: 50%; opacity: 0; }
-.hiw-bot.is-clicking::after { animation: hiw-click .42s ease-out; }
-@keyframes hiw-click { 0% { opacity: .9; transform: scale(.5); } 100% { opacity: 0; transform: scale(1.9); } }
+.hiw-bot {
+  position: absolute;
+  top: 40px;
+  left: calc(12.5% + (var(--pos, 0) / 3) * 75%);
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #e5b83b;
+  will-change: left;
+  transition: transform 0.2s ease;
+}
+.hiw-bot-svg {
+  display: block;
+  animation: hiw-bot-float 2.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 10px rgba(229, 184, 59, 0.4));
+}
+@keyframes hiw-bot-float {
+  0% { transform: translateY(-3px) scale(0.98); }
+  100% { transform: translateY(3px) scale(1.02); }
+}
+.hiw-bot:active .hiw-bot-svg {
+  transform: scale(0.88);
+}
 
-.hiw-stage { position: relative; overflow: hidden; padding: 6px 8px; perspective: 1400px; perspective-origin: 50% 40%; }
-.hiw-deck { position: relative; height: 340px; transform-style: preserve-3d; }
+.hiw-stage { 
+  position: relative; 
+  overflow: hidden; 
+  padding: 12px 8px 24px; 
+  perspective: 1400px; 
+  perspective-origin: 50% 40%;
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.hiw-deck { 
+  position: relative; 
+  height: 350px; 
+  transform-style: preserve-3d; 
+}
+
 .hiw-slide {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  padding: 30px 32px;
+  position: absolute; 
+  inset: 0;
+  display: flex; 
+  flex-direction: column;
+  padding: 32px 36px;
+  border-radius: 24px;
+  border: 1px solid rgba(229, 184, 59, 0.25);
+  background: rgba(6, 26, 19, 0.94);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.75), 
+    0 0 25px rgba(16, 185, 129, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   transform-origin: 50% 50%;
   --offset: calc(var(--i) - var(--pos, 0));
   --dist: max(var(--offset), calc(var(--offset) * -1));
@@ -3588,17 +3844,74 @@ html.light .auth-split__art { background: radial-gradient(120% 90% at 70% 20%, #
   pointer-events: none;
   will-change: transform, opacity;
   backface-visibility: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-.hiw-slide.is-active { pointer-events: auto; }
+
+.hiw-slide.is-active {
+  pointer-events: auto;
+  border-color: rgba(229, 184, 59, 0.65);
+  box-shadow:
+    0 30px 80px -15px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(16, 185, 129, 0.18),
+    0 0 18px rgba(229, 184, 59, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* ── Parallax depth layers ── */
+.hiw-layer {
+  --slide-offset: calc(var(--i) - var(--pos, 0));
+  transform: translate3d(calc(var(--slide-offset) * var(--depth, 1) * -26px), calc(var(--slide-offset) * var(--depth, 1) * 7px), 0);
+  will-change: transform;
+}
+
+/* A soft light that tracks the pointer's progress across the deck */
+.hiw-slide__glow {
+  position: absolute; 
+  inset: 0; 
+  border-radius: inherit; 
+  pointer-events: none;
+  background: radial-gradient(60% 120% at calc(var(--pos, 0) / 3 * 100%) 0%, rgba(229,184,59,.16), transparent 62%);
+  opacity: clamp(0, calc(1 - var(--dist) * 1.6), 1);
+}
+html.light .hiw-slide__glow { 
+  background: radial-gradient(60% 120% at calc(var(--pos, 0) / 3 * 100%) 0%, rgba(11,95,165,.14), transparent 62%); 
+}
+
+/* The step number sits furthest back and drifts with parallax */
+.hiw-slide__index {
+  position: absolute; 
+  top: 8px; 
+  right: 28px; 
+  pointer-events: none;
+  color: rgba(52, 90, 66, 0.38);
+  font: 800 clamp(72px, 10vw, 118px)/1 "IBM Plex Mono", monospace;
+  --slide-offset: calc(var(--i) - var(--pos, 0));
+  transform: translate3d(calc(var(--slide-offset) * -120px), calc(var(--slide-offset) * 14px), 0);
+  will-change: transform;
+  user-select: none;
+}
+html.light .hiw-slide__index { color: rgba(11,95,165,.14); }
+
 html:not(.light) .hiw-slide { background-color: rgba(6, 26, 19, .94) !important; }
-html.light .hiw-slide { background: rgba(255, 255, 255, .96) !important; }
+html.light .hiw-slide {
+  background: rgba(255, 255, 255, .96) !important;
+  border-color: rgba(11, 95, 165, 0.2) !important;
+  box-shadow: 0 20px 50px -10px rgba(11, 95, 165, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+}
+html.light .hiw-slide.is-active {
+  border-color: rgba(11, 95, 165, 0.6) !important;
+  box-shadow:
+    0 26px 60px -10px rgba(11, 95, 165, 0.15),
+    0 0 24px rgba(11, 95, 165, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 1) !important;
+}
 .hiw-slide__head { display: flex; align-items: center; gap: 10px; }
-.hiw-slide__icon { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid rgba(229,184,59,.35); border-radius: 9px; background: rgba(229,184,59,.1); color: #e5b83b; }
+.hiw-slide__icon { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid rgba(229,184,59,.4); border-radius: 10px; background: rgba(229,184,59,.12); color: #e5b83b; box-shadow: 0 0 12px rgba(229,184,59,0.15); }
 .hiw-slide__tag { color: #e5b83b; font: 700 10px/1 "IBM Plex Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
 .hiw-slide__title { margin: 16px 0 0; font-size: clamp(19px,2.2vw,26px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; text-wrap: balance; }
-.hiw-slide__body { margin: 12px 0 0; max-width: 62ch; color: #8eaaa0; font-size: 13px; line-height: 1.65; }
+.hiw-slide__body { margin: 12px 0 0; max-width: 62ch; color: #8eaaa0; font-size: 13.5px; line-height: 1.65; }
 html.light .hiw-slide__body { color: var(--bd-mid); }
-.hiw-slide__out { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; align-self: flex-start; border: 1px solid rgba(229,184,59,.28); border-radius: 9px; padding: 7px 11px; background: rgba(229,184,59,.08); color: #ffe28a; font: 700 10px/1 "IBM Plex Mono", monospace; letter-spacing: .06em; }
+.hiw-slide__out { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; align-self: flex-start; border: 1px solid rgba(229,184,59,.35); border-radius: 10px; padding: 8px 13px; background: rgba(229,184,59,.1); color: #ffe28a; font: 700 10.5px/1 "IBM Plex Mono", monospace; letter-spacing: .06em; box-shadow: 0 0 14px rgba(229,184,59,0.1); }
 .hiw-step-out-dot { width: 6px; height: 6px; border-radius: 50%; background: #e5b83b; animation: hiw-blink 2.6s ease-in-out infinite; }
 @keyframes hiw-blink { 50% { opacity: .3; } }
 .hiw-slide__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; overflow: hidden; border-radius: 0 0 16px 16px; background: rgba(229,184,59,.12); }
