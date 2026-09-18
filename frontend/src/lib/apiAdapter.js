@@ -42,27 +42,34 @@ export function normalizeBackendTrace(payload) {
 
   const nodes = rawNodes.map((n) => {
     const d = n.data ?? {};
+    const riskVal = Number(d.riskScore ?? d.risk_score ?? d.risk ?? n.riskScore ?? n.risk_score ?? n.risk ?? 0);
+    const bandVal = (d.riskBand ?? d.risk_band ?? (riskVal >= 80 ? "CRITICAL" : riskVal >= 60 ? "HIGH" : riskVal >= 35 ? "MEDIUM" : "LOW")).toUpperCase();
     return {
       id: d.address ?? n.id,
       label: d.label ?? d.address ?? n.id,
       type: nodeType(d),
-      balance: Number(d.inUsd ?? 0) - Number(d.outUsd ?? 0),
-      firstSeen: d.firstSeen ?? null,
-      risk: d.riskScore ?? 0,
-      riskBand: d.riskBand ?? null,
-      txCount: d.degree ?? 0,
+      balance: Number(d.inUsd ?? d.in_usd ?? 0) - Number(d.outUsd ?? d.out_usd ?? 0),
+      firstSeen: d.firstSeen ?? d.first_seen ?? null,
+      risk: riskVal,
+      riskScore: riskVal,
+      riskBand: bandVal,
+      sanctionFloorApplied: !!(d.sanctionFloorApplied ?? d.sanction_floor_applied),
+      sanctionFloorReason: d.sanctionFloorReason ?? d.sanction_floor_reason ?? null,
+      vaspAttribution: d.vaspAttribution ?? d.vasp_attribution ?? null,
+      transactionAggregates: d.transactionAggregates ?? d.transaction_aggregates ?? {},
+      txCount: d.degree ?? d.tx_count ?? 0,
       chain: d.chain,
-      sanctioned: !!d.sanctioned,
+      sanctioned: !!(d.sanctioned ?? d.is_sanctioned),
       hop: d.hop,
       // carried through so the detail drawer can show WHY a wallet scored
       factors: d.factors ?? [],
       narrative: d.narrative ?? null,
-      recommendedActions: d.recommendedActions ?? [],
-      hopsToExchange: d.hopsToExchange ?? null,
-      hopsToSanctioned: d.hopsToSanctioned ?? null,
-      explorerUrl: d.explorerUrl ?? null,
-      inUsd: Number(d.inUsd ?? 0),
-      outUsd: Number(d.outUsd ?? 0),
+      recommendedActions: d.recommendedActions ?? d.recommended_actions ?? [],
+      hopsToExchange: d.hopsToExchange ?? d.hops_to_exchange ?? null,
+      hopsToSanctioned: d.hopsToSanctioned ?? d.hops_to_sanctioned ?? null,
+      explorerUrl: d.explorerUrl ?? d.explorer_url ?? null,
+      inUsd: Number(d.inUsd ?? d.in_usd ?? 0),
+      outUsd: Number(d.outUsd ?? d.out_usd ?? 0),
     };
   });
 
@@ -83,34 +90,54 @@ export function normalizeBackendTrace(payload) {
       txCount: d.txCount ?? 1,
       label: e.label,
       animated: !!e.animated,
+      risk: d.risk ?? null,
+      relevance: d.relevance ?? null,
+      evidence: d.evidence ?? [],
+      flags: d.flags ?? [],
+      isBridge: !!(d.isBridge ?? d.is_bridge),
+      bridgeInfo: d.bridgeInfo ?? d.bridge_info ?? null,
+      crossChainTransfer: d.crossChainTransfer ?? d.cross_chain_transfer ?? null,
     };
   });
 
-  // The VASP endpoint is the point of the whole trace: it is who a Section
-  // 91 notice gets served on. Prefer a wallet the backend put 0 hops from an
-  // exchange; fall back to the highest-risk node rather than inventing one.
-  const vasp =
-    nodes.find((n) => n.type === "VASP") ??
-    nodes.filter((n) => n.type !== "SUSPECT").sort((a, b) => (b.risk ?? 0) - (a.risk ?? 0))[0] ??
-    null;
+  // Decoupled VASP Attribution: consume top-level nearestExchange/attribution or look for identified VASP node.
+  const backendAttr = payload?.attribution ?? payload?.nearestExchange;
 
-  const depositEdge = vasp
-    ? edges.filter((e) => e.target === vasp.id).sort((a, b) => b.amount - a.amount)[0]
+  const vaspNode = nodes.find((n) => (n.vaspAttribution && n.vaspAttribution.identified !== false) || n.type === "VASP");
+
+  const depositEdge = vaspNode
+    ? edges.filter((e) => e.target === vaspNode.id).sort((a, b) => b.amount - a.amount)[0]
     : null;
 
-  const attribution = vasp
+  const attribution = backendAttr
     ? {
-        // No invented exchange name. If the backend could not attribute one,
-        // the UI says so — naming the wrong VASP sends the freeze request to
-        // the wrong place.
-        exchange_name: vasp.label && vasp.label !== vasp.id ? vasp.label : "Unattributed endpoint",
-        deposit_address: vasp.id,
-        hot_wallet_address: vasp.id,
+        exchange_name: backendAttr.exchange_name ?? backendAttr.vasp_name ?? "Identified Exchange",
+        deposit_address: backendAttr.deposit_address ?? vaspNode?.id ?? "",
+        hot_wallet_address: backendAttr.deposit_address ?? vaspNode?.id ?? "",
         tx_hash: depositEdge?.tx_hash ?? "",
         deposit_timestamp: depositEdge?.timestamp ?? "",
-        confidence: Math.min(1, Math.max(0, Number(vasp.risk ?? 0) / 100)),
-        hops: vasp.hop ?? payload?.hops ?? 0,
+        confidence: backendAttr.confidence ?? 0.85,
+        wallet_type: backendAttr.wallet_type ?? "DEPOSIT",
+        case_linked_usd: backendAttr.case_linked_usd ?? 0.0,
+        hops: backendAttr.hops ?? vaspNode?.hop ?? 0,
         time_to_attribution_ms: payload?.elapsedMs ?? 0,
+        entity_type: "exchange",
+        attribution_evidence: backendAttr.evidence ?? [],
+      }
+    : vaspNode
+    ? {
+        exchange_name: vaspNode.vaspAttribution?.name ?? (vaspNode.label && vaspNode.label !== vaspNode.id ? vaspNode.label : "Identified Exchange Endpoint"),
+        deposit_address: vaspNode.id,
+        hot_wallet_address: vaspNode.id,
+        tx_hash: depositEdge?.tx_hash ?? "",
+        deposit_timestamp: depositEdge?.timestamp ?? "",
+        confidence: vaspNode.vaspAttribution?.confidence ?? 0.85,
+        wallet_type: vaspNode.vaspAttribution?.wallet_type ?? vaspNode.vaspAttribution?.walletType ?? "DEPOSIT",
+        case_linked_usd: vaspNode.inUsd ?? 0.0,
+        hops: vaspNode.hop ?? payload?.hops ?? 0,
+        time_to_attribution_ms: payload?.elapsedMs ?? 0,
+        entity_type: vaspNode.vaspAttribution?.entity_type ?? "exchange",
+        attribution_evidence: vaspNode.vaspAttribution?.evidence ?? [],
       }
     : null;
 
@@ -119,6 +146,8 @@ export function normalizeBackendTrace(payload) {
     edges,
     attribution,
     transactions: payload?.transactions ?? [],
+    crossChainTransfers: payload?.crossChainTransfers ?? payload?.cross_chain_transfers ?? [],
+    crossChain: payload?.crossChain ?? payload?.cross_chain ?? null,
     stats: payload?.stats ?? null,
     prices: payload?.prices ?? null,
     providerErrors: payload?.providerErrors ?? [],

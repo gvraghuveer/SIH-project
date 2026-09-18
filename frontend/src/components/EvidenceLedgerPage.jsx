@@ -6,7 +6,8 @@ import {
   Fingerprint, Layers, Printer, Search, ShieldCheck, Sparkles,
   Shield, Activity, ArrowRight, RefreshCw
 } from "lucide-react";
-import { fetchEvidenceRecords, fetchEvidenceCases } from "../lib/supabase.js";
+import { fetchEvidenceRecords } from "../lib/supabase.js";
+import { exportEvidencePackage, verifyEvidenceChainApi } from "../lib/api.js";
 import { NodeDetailDrawer } from "./NodeDetailDrawer.jsx";
 
 export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, activeFir, suspectAddress }) {
@@ -42,14 +43,21 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
   async function loadRecords() {
     setLoading(true);
     setLoadError(null);
+    // A newly opened ledger has no investigation scope. Do not enumerate
+    // historical cases here; evidence becomes visible only after a trace
+    // supplies its case reference.
+    if (!activeCase) {
+      setDbRecords([]);
+      setCases([]);
+      setLoading(false);
+      return;
+    }
     try {
-      const [data, caseList] = await Promise.all([
-        fetchEvidenceRecords(activeCase || undefined),
-        fetchEvidenceCases(),
-      ]);
+      const data = await fetchEvidenceRecords(activeCase);
       setDbRecords(data || []);
-      setCases(caseList || []);
-      if (!activeCase && caseList?.length) setActiveCase(caseList[0]);
+      // Keep the selector scoped to the investigation that opened this page.
+      // Historical case discovery belongs in the case workspace, not here.
+      setCases([activeCase]);
     } catch (err) {
       console.error("Failed to load evidence records", err);
       setLoadError(err.message || String(err));
@@ -160,10 +168,25 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
         }
       }
 
+      const fromNode = nodesMap.get(from);
+      const counterpartyNode = nodesMap.get(counterpartyAddr);
+
+      // Extract transaction-level risk, relevance, and explainability
+      const txRiskObj = tx.risk || {};
+      const txRelObj = tx.relevance || {};
+
+      const txRiskScore = txRiskObj.score ?? Number(
+        counterpartyNode?.data?.riskScore ?? counterpartyNode?.risk ?? fromNode?.data?.riskScore ?? fromNode?.risk ?? 0
+      );
+      const txRiskBand = txRiskObj.band || (txRiskScore >= 80 ? "CRITICAL" : txRiskScore >= 60 ? "HIGH" : txRiskScore >= 35 ? "MEDIUM" : "LOW");
+      const relevanceScore = txRelObj.score ?? 50.0;
+      const taintShare = txRelObj.taint_share ?? 0.0;
+      const riskFactors = txRiskObj.factors || [];
+
       return {
         id: `tx-${idx}-${tx.tx_hash || idx}`,
         seq: idx + 1,
-        hop: idx + 1,
+        hop: txRelObj.hop || idx + 1,
         case_ref: activeCaseRef || (activeFir ? `FIR-${activeFir}` : "LIVE_TRACE"),
         from_addr: from,
         origin_sender: from,
@@ -181,6 +204,11 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
         classification: isToVasp ? "VASP ATTRIBUTION" : isFromSuspect ? "OUTWARD SWEEP" : "INBOUND DEPOSIT",
         chain: tx.chain || graph?.nodes?.[0]?.chain || "POLYGON",
         tx_hash: tx.tx_hash || (tx.txHashes && tx.txHashes[0]) || "",
+        risk_score: txRiskScore,
+        risk_band: txRiskBand,
+        relevance_score: relevanceScore,
+        taint_share: taintShare,
+        risk_factors: riskFactors,
         status: "CERTIFIED",
         isLive: true,
       };
@@ -241,9 +269,14 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
 
   const filteredRecords = useMemo(() => {
     return records.filter(r => {
-      const classification = (r.classification || "").toUpperCase();
+      const band = (r.risk_band || "").toUpperCase();
+      const score = Number(r.risk_score || 0);
+
       const matchFilter = 
         filterType === "ALL" ? true :
+        filterType === "HIGH_CRIT" ? (band === "HIGH" || band === "CRITICAL" || score >= 60) :
+        filterType === "MED" ? (band === "MEDIUM" || band === "ELEVATED" || band === "MODERATE" || (score >= 35 && score < 60)) :
+        filterType === "LOW" ? (band === "LOW" || score < 35) :
         filterType === "SWEEP" ? classification.includes("SWEEP") :
         filterType === "DEPOSIT" ? classification.includes("DEPOSIT") :
         filterType === "VASP" ? classification.includes("VASP") : true;
@@ -259,7 +292,7 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
         counterparty.includes(q) ||
         txHash.includes(q) ||
         hop.includes(q) ||
-        classification.toLowerCase().includes(q);
+        String(r.classification || "").toLowerCase().includes(q);
 
       return matchFilter && matchSearch;
     });
@@ -313,7 +346,7 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
                     : "text-slate-400 hover:text-slate-200"
                 }`}
               >
-                All Database Records ({dbRecords.length})
+                Current Case Records ({dbRecords.length})
               </button>
             </div>
           </div>
@@ -364,24 +397,41 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
 
             <button
               type="button"
-              onClick={exportExcel}
-              disabled={!filteredRecords.length}
-              className="btn-secondary flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-extrabold cursor-pointer disabled:opacity-40"
+              onClick={async () => {
+                try {
+                  if (!activeCase) return;
+                  const pkg = await exportEvidencePackage(activeCase);
+                  if (pkg) {
+                    const blob = new Blob([JSON.stringify(pkg, null, 2)], { type: "application/json" });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.download = pkg.download_filename || "evidence_package.json";
+                    link.click();
+                  }
+                } catch (e) {
+                  alert(`Export package error: ${e.message}`);
+                }
+              }}
+              disabled={!activeCase || !filteredRecords.length}
+              className="rolex-green-btn flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-extrabold cursor-pointer disabled:opacity-40"
             >
-              <FileSpreadsheet size={14} />
-              <span className="font-extrabold">Export Excel</span>
+              <CloudDownload size={14} className="text-[#150F00]" />
+              <span className="font-extrabold text-[#150F00]">Export Evidence Package</span>
             </button>
           </div>
         </div>
 
         {/* Search & Filter Bar */}
         <div className="mt-5 flex flex-col gap-3 pt-5 border-t border-slate-200 dark:border-white/5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="chip-strip flex items-center gap-2">
+          <div className="chip-strip flex flex-wrap items-center gap-2">
             <span className="chip-strip__label text-xs font-bold text-slate-500 dark:text-slate-400">Filter:</span>
             {[
               { id: "ALL", label: `All (${records.length})` },
+              { id: "HIGH_CRIT", label: "High / Critical Risk" },
+              { id: "MED", label: "Medium Risk" },
+              { id: "LOW", label: "Low Risk" },
               { id: "SWEEP", label: "Outward Sweep" },
-              { id: "DEPOSIT", label: "Inbound Deposit" },
               { id: "VASP", label: "VASP Endpoints" },
             ].map(tab => (
               <button
@@ -406,7 +456,7 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
               onChange={(e) => setActiveCase(e.target.value || null)}
               className="rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-black/40 px-2.5 py-1.5 text-xs font-bold text-slate-900 dark:text-slate-200 focus:border-[#d8b84d] focus:outline-none"
             >
-              <option value="">All cases</option>
+              <option value="">No active case</option>
               {cases.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
@@ -467,6 +517,7 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
                   <th className="py-4 px-4 sm:px-6">ORIGIN / SENDER</th>
                   <th className="py-4 px-4 sm:px-6">COUNTERPARTY / RECIPIENT</th>
                   <th className="py-4 px-4 sm:px-6">VALUE</th>
+                  <th className="py-4 px-4 sm:px-6">RISK & RELEVANCE</th>
                   <th className="py-4 px-4 sm:px-6">CLASSIFICATION</th>
                   <th className="py-4 px-4 sm:px-6 text-right">AUDIT</th>
                 </tr>
@@ -567,6 +618,32 @@ export function EvidenceLedgerPage({ onNavigate, graph, activeCaseRef, caseRef, 
                             </div>
                           </>
                         )}
+                      </td>
+
+                      {/* RISK & RELEVANCE */}
+                      <td className="py-4 px-4 sm:px-6 whitespace-nowrap">
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center gap-1.5">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-extrabold uppercase ${
+                              r.risk_band === "CRITICAL" ? "bg-red-500/20 text-red-400 border border-red-500/40" :
+                              r.risk_band === "HIGH" ? "bg-amber-500/20 text-amber-400 border border-amber-500/40" :
+                              r.risk_band === "MEDIUM" ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/40" :
+                              "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                            }`}>
+                              {r.risk_band || "LOW"} ({Math.round(r.risk_score || 0)})
+                            </span>
+                            {r.relevance_score != null && (
+                              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+                                Rel: {Math.round(r.relevance_score)}/100
+                              </span>
+                            )}
+                          </div>
+                          {r.taint_share > 0 && (
+                            <div className="text-[10px] text-slate-400 font-mono">
+                              Taint: {(r.taint_share * 100).toFixed(0)}%
+                            </div>
+                          )}
+                        </div>
                       </td>
 
                       {/* CLASSIFICATION */}
